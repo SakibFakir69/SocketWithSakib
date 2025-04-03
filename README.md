@@ -35,6 +35,30 @@ when and why we use it
 
 
 
+#Store active user and show 
+
+const users = new Map(); // Store active users
+
+io.on("connection", (socket) => {
+    console.log("A user connected:", socket.id);
+
+    // Add user to the active users list
+    users.set(socket.id, { id: socket.id });
+
+    // Send updated user list to all clients
+    io.emit("users", Array.from(users.values())); 
+
+    // Handle user disconnect
+    socket.on("disconnect", () => {
+        console.log("A user disconnected:", socket.id);
+        users.delete(socket.id);
+        io.emit("users", Array.from(users.values())); 
+    });
+# array.from() use to convert to array 
+#values() use to get all value it like work iteator
+
+
+
 
 
 
